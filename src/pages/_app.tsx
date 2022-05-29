@@ -8,13 +8,15 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>Life is Short</title>
+        <title>Life Is Short</title>
       </Head>
-      <MantineProvider withGlobalStyles withNormalizeCSS>
-        <NotificationsProvider position="bottom-right" zIndex={2077}>
-          <Component {...pageProps} />
-        </NotificationsProvider>
-      </MantineProvider>
+      <main className="m-auto max-w-4xl">
+        <MantineProvider withGlobalStyles withNormalizeCSS>
+          <NotificationsProvider position="bottom-right" zIndex={2077}>
+            <Component {...pageProps} />
+          </NotificationsProvider>
+        </MantineProvider>
+      </main>
     </>
   );
 }

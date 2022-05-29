@@ -10,9 +10,11 @@
   },
   "dependencies": {
     "@mantine/core": "^4.2.7",
+    "@mantine/form": "^4.2.7",
     "@mantine/hooks": "^4.2.7",
     "@mantine/next": "^4.2.7",
     "@mantine/notifications": "^4.2.7",
+    "axios": "^0.27.2",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "firebase": "^9.8.2",
     "next": "12.1.6",
