@@ -1,18 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NextPage } from "next";
 import Link from "next/link";
 import { config } from "@config/supabase/supabase";
 import { TextInput, Button, Group, Box } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
+import { YouTube } from "@components/layout/YouTube";
 
 type links = {
-  link1: string;
-  link2: string;
-  link3: string;
+  link1?: string;
+  link2?: string;
+  link3?: string;
 };
 
-const show = (title: string, message: string, color: string) => {
+const makeNotification = (title: string, message: string, color: string) => {
   showNotification({
     title: title,
     message: message,
@@ -20,8 +21,13 @@ const show = (title: string, message: string, color: string) => {
   });
 };
 
+const makeLink = (data: string) => {
+  const result = data.split("=");
+  return `https://www.youtube.com/embed/${result[1]}`;
+};
+
 const linkform: NextPage = () => {
-  const [links, setLinks] = useState<links[]>();
+  const [links, setLinks] = useState<links>();
   const form = useForm({
     initialValues: {
       link1: "",
@@ -42,25 +48,31 @@ const linkform: NextPage = () => {
           { link1: values.link1, link2: values.link2, link3: values.link3 },
         ]);
       if (error) {
-        show("失敗", "再度入力してください", "red");
+        makeNotification("失敗", "再度入力してください", "red");
       }
       if (data) {
-        show("成功", "これ見てやる気を出せ！", "indigo");
+        makeNotification("成功", "これ見てやる気を出せ！", "indigo");
       }
     } catch (e) {
-      show("失敗", "再度入力してください", "red");
+      makeNotification("失敗", "再度入力してください", "red");
     }
   };
 
-  const get = async () => {
-    const { data, error } = await config.supabase.from("Links").select();
-    if (error) {
-      show("失敗", "再度試してください", "red");
-    }
-    if (data) {
-      setLinks(data);
-    }
-  };
+  useEffect(() => {
+    const get = async () => {
+      const { data, error } = await config.supabase.from("Links").select();
+      if (error) {
+        makeNotification("失敗", "再度試してください", "red");
+      }
+      if (data) {
+        const l1 = makeLink(data[2].link1);
+        const l2 = makeLink(data[2].link2);
+        const l3 = makeLink(data[2].link3);
+        setLinks({ link1: l1, link2: l2, link3: l3 });
+      }
+    };
+    get();
+  }, []);
 
   return (
     <div>
@@ -68,9 +80,6 @@ const linkform: NextPage = () => {
         <Link href="/">
           <a>←</a>
         </Link>
-        <Button color="indigo" onClick={get}>
-          get
-        </Button>
         <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
           <TextInput
             placeholder="https://"
@@ -94,15 +103,9 @@ const linkform: NextPage = () => {
           </Group>
         </form>
       </Box>
-      <iframe
-        width="160"
-        height="120"
-        src="https://www.youtube.com/embed/6zKNJW1-cwA"
-        title="YouTube video player"
-        frameBorder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-      ></iframe>
+      <YouTube link={links?.link1} />
+      <YouTube link={links?.link2} />
+      <YouTube link={links?.link3} />
     </div>
   );
 };
