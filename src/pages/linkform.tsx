@@ -42,36 +42,20 @@ const linkform: NextPage = () => {
           { link1: values.link1, link2: values.link2, link3: values.link3 },
         ]);
       if (error) {
-        showNotification({
-          title: "失敗",
-          message: "再度入力してください",
-          color: "red",
-        });
+        show("失敗", "再度入力してください", "red");
       }
       if (data) {
-        showNotification({
-          title: "成功",
-          message: "これ見てやる気を出せ！",
-          color: "indigo",
-        });
+        show("成功", "これ見てやる気を出せ！", "indigo");
       }
     } catch (e) {
-      showNotification({
-        title: "失敗",
-        message: "再度入力してください",
-        color: "red",
-      });
+      show("失敗", "再度入力してください", "red");
     }
   };
 
   const get = async () => {
     const { data, error } = await config.supabase.from("Links").select();
     if (error) {
-      showNotification({
-        title: "失敗",
-        message: "再度試してください",
-        color: "red",
-      });
+      show("失敗", "再度試してください", "red");
     }
     if (data) {
       setLinks(data);
