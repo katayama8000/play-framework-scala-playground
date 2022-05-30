@@ -13,8 +13,8 @@ type links = {
   link3?: string;
 };
 
-const makeLink = (data: string) => {
-  const result = data.split("=");
+const makeLink = (link: string) => {
+  const result = link.split("=");
   return `https://www.youtube.com/embed/${result[1]}`;
 };
 
