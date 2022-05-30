@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { NextPage } from "next";
 import Link from "next/link";
-import { config } from "@config/supabase/supabase";
 import { TextInput, Button, Group, Box, Grid } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
 import { Chips, Chip } from "@mantine/core";
+import { config } from "@config/supabase/supabase";
 import { YouTube } from "@components/layout/YouTube";
 
 type links = {
