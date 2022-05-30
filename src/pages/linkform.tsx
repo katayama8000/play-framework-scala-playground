@@ -3,23 +3,14 @@ import { NextPage } from "next";
 import Link from "next/link";
 import { TextInput, Button, Group, Box, Grid } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { showNotification } from "@mantine/notifications";
-import { Chips, Chip } from "@mantine/core";
 import { config } from "@config/supabase/supabase";
 import { YouTube } from "@components/layout/YouTube";
+import { makeNotification } from "@function/makeNotification";
 
 type links = {
   link1?: string;
   link2?: string;
   link3?: string;
-};
-
-const makeNotification = (title: string, message: string, color: string) => {
-  showNotification({
-    title: title,
-    message: message,
-    color: color,
-  });
 };
 
 const makeLink = (data: string) => {

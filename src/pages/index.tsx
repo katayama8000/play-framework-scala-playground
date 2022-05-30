@@ -3,7 +3,7 @@ import type { NextPage } from "next";
 import Link from "next/link";
 import { useForm } from "@mantine/form";
 import { TextInput, Button, Box, Group } from "@mantine/core";
-import { showNotification } from "@mantine/notifications";
+import { makeNotification } from "@function/makeNotification";
 
 const Home: NextPage = () => {
   const form = useForm({
@@ -17,17 +17,9 @@ const Home: NextPage = () => {
   const handleSubmit = useCallback(async (values: { todo: string }) => {
     console.log("values", values);
     try {
-      showNotification({
-        title: "成功",
-        message: "Todoを追加しました",
-        color: "indigo",
-      });
+      makeNotification("成功", "Todoを追加しました", "indigo");
     } catch (error) {
-      showNotification({
-        title: "失敗",
-        message: "Todoを追加できませんでした",
-        color: "red",
-      });
+      makeNotification("失敗", "再度入力してください", "red");
     }
     form.reset();
   }, []);
