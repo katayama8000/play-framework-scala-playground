@@ -62,9 +62,9 @@ const Home: NextPage = () => {
         },
       ]);
       if (data) {
-        makeNotification("成功", "Todoを追加しました", "indigo");
+        makeNotification("成功", "Todoを追加したぞ", "indigo");
       } else if (error) {
-        makeNotification("失敗", "再度入力してください", "red");
+        makeNotification("失敗", "再度入力して", "red");
       }
       form.reset();
     },
@@ -92,12 +92,13 @@ const Home: NextPage = () => {
           />
           <Group position="right" mt="md">
             <Button type="submit" color="indigo">
-              ボタン
+              追加
             </Button>
           </Group>
         </form>
       </Box>
-      {length}
+      <div>残りのタスク{length}</div>
+
       <div>
         {todos?.map((todo, index) => {
           return (

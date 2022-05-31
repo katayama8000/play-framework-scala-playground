@@ -30,14 +30,14 @@ const handleFinish = async (
       } else {
         makeNotification(
           "成功",
-          `残り${length - 1}です。本当に終わる？`,
+          `残タスク${length - 1}。本当に終わる？`,
           "indigo"
         );
       }
     } else {
       makeNotification(
         "成功",
-        `残り${length + 1}です。本当に終わる？`,
+        `残タスク${length + 1}。本当に終わる？`,
         "indigo"
       );
     }
@@ -52,7 +52,7 @@ const handleDelete = async (id: number) => {
     .delete()
     .match({ id: id });
   if (data) {
-    makeNotification("成功", "成功", "indigo");
+    makeNotification("成功", "タスク消したぞ", "indigo");
   } else if (error) {
     throw new Error("失敗");
   }
@@ -62,15 +62,17 @@ export const Todo: React.FC<toods> = ({ id, todo, isFinished, length }) => {
   const [opened, setOpened] = useState<boolean>(false);
   return (
     <div>
-      <div className="flex-center flex">
+      <div className="flex-center mt-2 flex">
         <Checkbox
           color="indigo"
           checked={isFinished}
           onChange={(event) => handleFinish(id, event.target.checked, length)}
         />
         {isFinished ? <del>{todo}</del> : <div>{todo}</div>}
-        <BsTrashFill onClick={() => setOpened(true)} />
-        {length}
+        <BsTrashFill
+          onClick={() => setOpened(true)}
+          className="mt-1 ml-2 hover:bg-sky-300"
+        />
       </div>
       <Modal
         withCloseButton={false}
@@ -78,7 +80,7 @@ export const Todo: React.FC<toods> = ({ id, todo, isFinished, length }) => {
         opened={opened}
         onClose={() => setOpened(false)}
       >
-        <h3 className="text-center">{todo}を削除しますか？</h3>
+        <h3 className="text-center">本当に{todo}を削除するのか？</h3>
         <Group position="right" mt="md">
           <Button
             color="red"

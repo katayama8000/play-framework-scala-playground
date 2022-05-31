@@ -59,7 +59,7 @@ const linkform: NextPage = () => {
     if (data) {
       makeNotification("成功", "これ見てやる気を出せ！", "indigo");
     } else if (error) {
-      makeNotification("失敗", "再度入力してください", "red");
+      makeNotification("失敗", "再度入力して", "red");
     }
     form.reset();
   };
@@ -80,7 +80,7 @@ const linkform: NextPage = () => {
   const get = async () => {
     const { data, error } = await config.supabase.from("Links").select();
     if (error) {
-      makeNotification("失敗", "再度試してください", "red");
+      makeNotification("失敗", "再度試して", "red");
     }
     if (data) {
       const l1 = makeLink(data[0].link1);
