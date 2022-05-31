@@ -25,11 +25,15 @@ const handleFinish = async (
   ]);
   if (data) {
     if (isFinished === true) {
-      makeNotification(
-        "成功",
-        `残り${length - 1}です。本当に終わる？`,
-        "indigo"
-      );
+      if (length === 1) {
+        makeNotification("成功", "終わらして普通だからな", "indigo");
+      } else {
+        makeNotification(
+          "成功",
+          `残り${length - 1}です。本当に終わる？`,
+          "indigo"
+        );
+      }
     } else {
       makeNotification(
         "成功",
@@ -55,8 +59,6 @@ const handleDelete = async (id: number) => {
 };
 
 export const Todo: React.FC<toods> = ({ id, todo, isFinished, length }) => {
-  console.log("todo", todo, isFinished, length);
-
   const [opened, setOpened] = useState<boolean>(false);
   return (
     <div>
@@ -76,7 +78,7 @@ export const Todo: React.FC<toods> = ({ id, todo, isFinished, length }) => {
         opened={opened}
         onClose={() => setOpened(false)}
       >
-        <h3 className="text-center">本当に削除しますか？</h3>
+        <h3 className="text-center">{todo}を削除しますか？</h3>
         <Group position="right" mt="md">
           <Button
             color="red"

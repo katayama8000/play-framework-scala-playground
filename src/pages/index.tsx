@@ -16,7 +16,7 @@ type todos = {
 };
 const Home: NextPage = () => {
   const [todos, setTodos] = useState<todos[]>();
-  const [length, setLength] = useState<number>();
+  const [length, setLength] = useState<number>(0);
   const form = useForm({
     initialValues: {
       todo: "",
@@ -37,41 +37,19 @@ const Home: NextPage = () => {
   const fetch = async () => {
     const { data, error } = await config.supabase.from("ToDos").select();
 
-    console.log("fetch", data);
-    let ary: todos[] = [];
+    let array: todos[] = [];
     data?.forEach((todo) => {
       if (!todo.isFinished) {
-        ary.push(todo);
+        array.push(todo);
       }
     });
     data?.forEach((todo) => {
-      todo.length = ary.length;
+      todo.length = array.length;
     });
 
-    console.log("fetch", data);
-
+    setLength(array.length);
     setTodos(data!);
-    // console.log(ary.length);
-    // const supa = [...data!, { length: ary.length }];
-    // console.log("supa", supa);
-
-    // setTodos(supa);
-    // console.log(length);
-    //countLength(data!);
   };
-
-  // const countLength = (data: todos[]) => {
-  //   let ary: todos[] = [];
-  //   data?.forEach((todo) => {
-  //     if (!todo.isFinished) {
-  //       ary.push(todo);
-  //     }
-  //   });
-  //   console.log("こここ", todos);
-
-  //   console.log(ary.length);
-  //   setLength(ary.length);
-  // };
 
   const handleSubmit = useCallback(
     async (values: { todo: string; isFinished: boolean }) => {
@@ -95,8 +73,8 @@ const Home: NextPage = () => {
 
   return (
     <div className="p-20">
-      <Link href="/linkform">
-        <a>YouTube</a>
+      <Link href="/dashboard">
+        <a>dashboard</a>
       </Link>
       <Box sx={{ maxWidth: 300 }} mx="auto">
         <form
@@ -104,6 +82,7 @@ const Home: NextPage = () => {
           className="mt-2"
         >
           <TextInput
+            required
             placeholder={"今日のTodo"}
             classNames={{
               input: "text-base",

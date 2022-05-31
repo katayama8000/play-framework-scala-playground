@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { NextPage } from "next";
 import Link from "next/link";
-import { TextInput, Button, Group, Box, Grid } from "@mantine/core";
+import { TextInput, Button, Group, Box } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { config } from "@config/supabase/supabase";
 import { YouTube } from "@components/layout/YouTube";
@@ -16,6 +16,11 @@ type links = {
 const makeLink = (link: string) => {
   const result = link.split("=");
   return `https://www.youtube.com/embed/${result[1]}`;
+};
+
+const makeOrignalLink = (link: string) => {
+  const result = link.split("embed/");
+  return `https://www.youtube.com/watch?v=${result[1]}`;
 };
 
 const linkform: NextPage = () => {
@@ -33,6 +38,16 @@ const linkform: NextPage = () => {
     link2: string;
     link3: string;
   }) => {
+    if (values.link1 === "") {
+      values.link1 = makeOrignalLink(links?.link1!);
+    }
+    if (values.link2 === "") {
+      values.link2 = makeOrignalLink(links?.link2!);
+    }
+    if (values.link3 === "") {
+      values.link3 = makeOrignalLink(links?.link3!);
+    }
+
     const { data, error } = await config.supabase.from("Links").upsert([
       {
         id: 0,
@@ -50,20 +65,30 @@ const linkform: NextPage = () => {
   };
 
   useEffect(() => {
-    const get = async () => {
-      const { data, error } = await config.supabase.from("Links").select();
-      if (error) {
-        makeNotification("失敗", "再度試してください", "red");
-      }
-      if (data) {
-        const l1 = makeLink(data[0].link1);
-        const l2 = makeLink(data[0].link2);
-        const l3 = makeLink(data[0].link3);
+    config.supabase
+      .from("Links")
+      .on("*", (payload) => {
+        const l1 = makeLink(payload.new.link1);
+        const l2 = makeLink(payload.new.link2);
+        const l3 = makeLink(payload.new.link3);
         setLinks({ link1: l1, link2: l2, link3: l3 });
-      }
-    };
+      })
+      .subscribe();
     get();
-  }, [links]);
+  }, []);
+
+  const get = async () => {
+    const { data, error } = await config.supabase.from("Links").select();
+    if (error) {
+      makeNotification("失敗", "再度試してください", "red");
+    }
+    if (data) {
+      const l1 = makeLink(data[0].link1);
+      const l2 = makeLink(data[0].link2);
+      const l3 = makeLink(data[0].link3);
+      setLinks({ link1: l1, link2: l2, link3: l3 });
+    }
+  };
 
   return (
     <div>
@@ -73,17 +98,17 @@ const linkform: NextPage = () => {
         </Link>
         <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
           <TextInput
-            placeholder="https://"
+            placeholder="https://www.youtube.com/"
             {...form.getInputProps("link1")}
             className="py-2"
           />
           <TextInput
-            placeholder="https://"
+            placeholder="https://www.youtube.com/"
             {...form.getInputProps("link2")}
             className="py-2"
           />
           <TextInput
-            placeholder="https://"
+            placeholder="https://www.youtube.com/"
             {...form.getInputProps("link3")}
             className="py-2"
           />
