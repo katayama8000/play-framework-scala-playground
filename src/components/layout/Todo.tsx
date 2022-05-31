@@ -24,22 +24,11 @@ const handleFinish = async (
     },
   ]);
   if (data) {
-    if (isFinished === true) {
-      if (length === 1) {
-        makeNotification("成功", "終わらして普通だからな", "indigo");
-      } else {
-        makeNotification(
-          "成功",
-          `残タスク${length - 1}。本当に終わる？`,
-          "indigo"
-        );
-      }
+    const left = isFinished ? length - 1 : length + 1;
+    if (length === 1) {
+      makeNotification("成功", "終わらして普通だからな", "indigo");
     } else {
-      makeNotification(
-        "成功",
-        `残タスク${length + 1}。本当に終わる？`,
-        "indigo"
-      );
+      makeNotification("成功", `残タスク${left}。本当に終わる？`, "indigo");
     }
   } else if (error) {
     throw new Error("失敗");
