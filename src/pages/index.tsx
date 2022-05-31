@@ -7,14 +7,16 @@ import { makeNotification } from "@function/makeNotification";
 import { config } from "@config/supabase/supabase";
 import { Todo } from "@components/layout/Todo";
 
-type toods = {
+type todos = {
   id: number;
   todo: string;
   isFinished: boolean;
   created_at?: string;
+  length: number;
 };
 const Home: NextPage = () => {
-  const [todos, setTodos] = useState<toods[]>();
+  const [todos, setTodos] = useState<todos[]>();
+  const [length, setLength] = useState<number>();
   const form = useForm({
     initialValues: {
       todo: "",
@@ -26,20 +28,54 @@ const Home: NextPage = () => {
     config.supabase
       .from("ToDos")
       .on("*", (payload) => {
-        console.log("Change received!", payload);
         fetch();
       })
       .subscribe();
+    fetch();
   }, []);
 
   const fetch = async () => {
     const { data, error } = await config.supabase.from("ToDos").select();
+
+    console.log("fetch", data);
+    let ary: todos[] = [];
+    data?.forEach((todo) => {
+      if (!todo.isFinished) {
+        ary.push(todo);
+      }
+    });
+    data?.forEach((todo) => {
+      todo.length = ary.length;
+    });
+
+    console.log("fetch", data);
+
     setTodos(data!);
+    // console.log(ary.length);
+    // const supa = [...data!, { length: ary.length }];
+    // console.log("supa", supa);
+
+    // setTodos(supa);
+    // console.log(length);
+    //countLength(data!);
   };
+
+  // const countLength = (data: todos[]) => {
+  //   let ary: todos[] = [];
+  //   data?.forEach((todo) => {
+  //     if (!todo.isFinished) {
+  //       ary.push(todo);
+  //     }
+  //   });
+  //   console.log("こここ", todos);
+
+  //   console.log(ary.length);
+  //   setLength(ary.length);
+  // };
 
   const handleSubmit = useCallback(
     async (values: { todo: string; isFinished: boolean }) => {
-      console.log(values);
+      console.log("insert");
 
       const { data, error } = await config.supabase.from("ToDos").insert([
         {
@@ -82,6 +118,7 @@ const Home: NextPage = () => {
           </Group>
         </form>
       </Box>
+      {length}
       <div>
         {todos?.map((todo, index) => {
           return (
@@ -91,6 +128,7 @@ const Home: NextPage = () => {
                 id={todo.id}
                 isFinished={todo.isFinished}
                 created_at={todo.created_at}
+                length={todo.length!}
               />
             </div>
           );

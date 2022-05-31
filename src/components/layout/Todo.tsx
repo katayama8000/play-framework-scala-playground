@@ -1,16 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { config } from "@config/supabase/supabase";
-import { Checkbox } from "@mantine/core";
+import { Button, Checkbox, Group, Modal } from "@mantine/core";
 import { makeNotification } from "@function/makeNotification";
+import { BsTrashFill } from "react-icons/bs";
 
 type toods = {
   id: number;
   todo: string;
   isFinished: boolean;
+  length: number;
   created_at?: string;
 };
 
-const handleFinish = async (id: number, isFinished: boolean) => {
+const handleFinish = async (
+  id: number,
+  isFinished: boolean,
+  length: number
+) => {
   const { data, error } = await config.supabase.from("ToDos").upsert([
     {
       id,
@@ -18,24 +24,73 @@ const handleFinish = async (id: number, isFinished: boolean) => {
     },
   ]);
   if (data) {
+    if (isFinished === true) {
+      makeNotification(
+        "成功",
+        `残り${length - 1}です。本当に終わる？`,
+        "indigo"
+      );
+    } else {
+      makeNotification(
+        "成功",
+        `残り${length + 1}です。本当に終わる？`,
+        "indigo"
+      );
+    }
+  } else if (error) {
+    throw new Error("失敗");
+  }
+};
+
+const handleDelete = async (id: number) => {
+  const { data, error } = await config.supabase
+    .from("ToDos")
+    .delete()
+    .match({ id: id });
+  if (data) {
     makeNotification("成功", "成功", "indigo");
   } else if (error) {
     throw new Error("失敗");
   }
 };
 
-export const Todo: React.FC<toods> = ({ id, todo, isFinished }) => {
+export const Todo: React.FC<toods> = ({ id, todo, isFinished, length }) => {
+  console.log("todo", todo, isFinished, length);
+
+  const [opened, setOpened] = useState<boolean>(false);
   return (
     <div>
       <div className="flex-center flex">
         <Checkbox
           color="indigo"
           checked={isFinished}
-          onChange={(event) => handleFinish(id, event.target.checked)}
+          onChange={(event) => handleFinish(id, event.target.checked, length)}
         />
         {isFinished ? <del>{todo}</del> : <div>{todo}</div>}
-        {/* <div>{id}</div> */}
+        <BsTrashFill onClick={() => setOpened(true)} />
+        {length}
       </div>
+      <Modal
+        withCloseButton={false}
+        centered
+        opened={opened}
+        onClose={() => setOpened(false)}
+      >
+        <h3 className="text-center">本当に削除しますか？</h3>
+        <Group position="right" mt="md">
+          <Button
+            color="red"
+            onClick={() => {
+              handleDelete(id), setOpened(false);
+            }}
+          >
+            はい
+          </Button>
+          <Button color="indigo" onClick={() => setOpened(false)}>
+            いいえ
+          </Button>
+        </Group>
+      </Modal>
     </div>
   );
 };
