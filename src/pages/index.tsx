@@ -32,7 +32,17 @@ const Home: NextPage = () => {
       })
       .subscribe();
     fetch();
+    //checkTask();
   }, []);
+
+  const checkTask = (task: number) => {
+    console.log("checkTask", length);
+
+    if (task !== 0) {
+      console.log("qqqq");
+      makeNotification("success", "まだ終わっていないのか", "cryn");
+    }
+  };
 
   const fetch = async () => {
     const { data, error } = await config.supabase.from("ToDos").select();
@@ -49,12 +59,11 @@ const Home: NextPage = () => {
 
     setLength(array.length);
     setTodos(data!);
+    checkTask(array.length);
   };
 
   const handleSubmit = useCallback(
     async (values: { todo: string; isFinished: boolean }) => {
-      console.log("insert");
-
       const { data, error } = await config.supabase.from("ToDos").insert([
         {
           todo: values.todo,
@@ -98,7 +107,6 @@ const Home: NextPage = () => {
         </form>
       </Box>
       <div>残りのタスク{length}</div>
-
       <div>
         {todos?.map((todo, index) => {
           return (
