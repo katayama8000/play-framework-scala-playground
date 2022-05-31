@@ -1,51 +1,41 @@
+import React from "react";
 import { config } from "@config/supabase/supabase";
 import { Checkbox } from "@mantine/core";
-
-import React from "react";
+import { makeNotification } from "@function/makeNotification";
 
 type toods = {
   id: number;
   todo: string;
   isFinished: boolean;
   created_at?: string;
-  handleFinish: (id: number, isFinished: boolean) => void;
 };
 
 const handleFinish = async (id: number, isFinished: boolean) => {
-  console.log(id, isFinished);
-
   const { data, error } = await config.supabase.from("ToDos").upsert([
     {
       id,
-      isFinished: !isFinished,
+      isFinished: isFinished,
     },
   ]);
   if (data) {
-    console.log("success");
+    makeNotification("成功", "成功", "indigo");
   } else if (error) {
-    console.log("error");
+    throw new Error("失敗");
   }
 };
 
-export const Todo: React.FC<toods> = ({
-  id,
-  todo,
-  isFinished,
-  created_at,
-  handleFinish,
-}) => {
-  console.log(id, todo, isFinished, created_at);
-
+export const Todo: React.FC<toods> = ({ id, todo, isFinished }) => {
   return (
     <div>
-      <Checkbox
-        color="indigo"
-        checked={isFinished}
-        onChange={(event) => handleFinish(id, event.target.checked)}
-      />
-      <div>{todo}</div>
-      <div>{id}</div>
-      <div>{isFinished}</div>
+      <div className="flex-center flex">
+        <Checkbox
+          color="indigo"
+          checked={isFinished}
+          onChange={(event) => handleFinish(id, event.target.checked)}
+        />
+        {isFinished ? <del>{todo}</del> : <div>{todo}</div>}
+        {/* <div>{id}</div> */}
+      </div>
     </div>
   );
 };

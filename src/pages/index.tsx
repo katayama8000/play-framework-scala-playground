@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { NextPage } from "next";
 import Link from "next/link";
 import { useForm } from "@mantine/form";
@@ -22,10 +22,19 @@ const Home: NextPage = () => {
     },
   });
 
-  const create = async () => {
+  useEffect(() => {
+    config.supabase
+      .from("ToDos")
+      .on("*", (payload) => {
+        console.log("Change received!", payload);
+        fetch();
+      })
+      .subscribe();
+  }, []);
+
+  const fetch = async () => {
     const { data, error } = await config.supabase.from("ToDos").select();
     setTodos(data!);
-    console.log(todos);
   };
 
   const handleSubmit = useCallback(
@@ -48,28 +57,11 @@ const Home: NextPage = () => {
     []
   );
 
-  const handleFinish = async (id: number, isFinished: boolean) => {
-    console.log(id, isFinished);
-
-    const { data, error } = await config.supabase.from("ToDos").upsert([
-      {
-        id,
-        isFinished: !isFinished,
-      },
-    ]);
-    if (data) {
-      console.log("success");
-    } else if (error) {
-      console.log("error");
-    }
-  };
-
   return (
     <div className="p-20">
       <Link href="/linkform">
         <a>YouTube</a>
       </Link>
-      <Button onClick={create}>マジでとる</Button>
       <Box sx={{ maxWidth: 300 }} mx="auto">
         <form
           onSubmit={form.onSubmit((values) => handleSubmit(values))}
@@ -91,15 +83,14 @@ const Home: NextPage = () => {
         </form>
       </Box>
       <div>
-        {todos?.map((todo) => {
+        {todos?.map((todo, index) => {
           return (
-            <div key={todo.id}>
+            <div key={index}>
               <Todo
                 todo={todo.todo}
                 id={todo.id}
                 isFinished={todo.isFinished}
                 created_at={todo.created_at}
-                handleFinish={handleFinish}
               />
             </div>
           );
