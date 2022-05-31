@@ -4,6 +4,7 @@ import { Button, Checkbox, Group, Modal } from "@mantine/core";
 import { makeNotification } from "@function/makeNotification";
 import { BsTrashFill } from "react-icons/bs";
 import dayjs from "dayjs";
+import { DeleteModal } from "@components/modal/DeleteModal";
 
 type toods = {
   id: number;
@@ -64,27 +65,13 @@ export const Todo: React.FC<toods> = ({ id, todo, isFinished, length }) => {
           className="mt-1 ml-2 hover:bg-sky-300"
         />
       </div>
-      <Modal
-        withCloseButton={false}
-        centered
+      <DeleteModal
+        id={id}
+        todo={todo}
         opened={opened}
-        onClose={() => setOpened(false)}
-      >
-        <h3 className="text-center">本当に{todo}を削除するのか？</h3>
-        <Group position="right" mt="md">
-          <Button
-            color="red"
-            onClick={() => {
-              handleDelete(id), setOpened(false);
-            }}
-          >
-            はい
-          </Button>
-          <Button color="indigo" onClick={() => setOpened(false)}>
-            いいえ
-          </Button>
-        </Group>
-      </Modal>
+        setOpened={setOpened}
+        handleDelete={handleDelete}
+      />
     </div>
   );
 };
