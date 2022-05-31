@@ -50,6 +50,8 @@ const handleDelete = async (id: number) => {
 };
 
 export const Todo: React.FC<toods> = ({ id, todo, isFinished, length }) => {
+  console.log("SS", isFinished);
+
   const [opened, setOpened] = useState<boolean>(false);
   return (
     <div>
@@ -68,6 +70,7 @@ export const Todo: React.FC<toods> = ({ id, todo, isFinished, length }) => {
       <DeleteModal
         id={id}
         todo={todo}
+        isFinished={isFinished}
         opened={opened}
         setOpened={setOpened}
         handleDelete={handleDelete}
