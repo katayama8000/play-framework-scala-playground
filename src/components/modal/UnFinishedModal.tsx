@@ -1,7 +1,7 @@
+import React, { useEffect, useState } from "react";
 import { YouTube } from "@components/layout/YouTube";
 import { config } from "@config/supabase/supabase";
 import { makeNotification } from "@function/makeNotification";
-import React, { useEffect, useState } from "react";
 import { Modal, Button, Group } from "@mantine/core";
 
 type links = {
@@ -20,7 +20,6 @@ const makeLink = (link: string) => {
 };
 
 export const UnFinishedModal: React.FC = () => {
-  const [links, setLinks] = useState<links>();
   const [showLink, setShowLink] = useState<string>();
   const [opened, setOpened] = useState(false);
 
@@ -36,43 +35,26 @@ export const UnFinishedModal: React.FC = () => {
         const l1 = makeLink(data[0].link1);
         const l2 = makeLink(data[0].link2);
         const l3 = makeLink(data[0].link3);
-        //setLinks({ link1: l1, link2: l2, link3: l3 });
-        if (random === 0) {
-          console.log("link1");
-          setShowLink(l1);
-        }
-        if (random === 1) {
-          console.log("link2");
-          setShowLink(l2);
-        }
-        if (random === 2) {
-          console.log("link3");
-          setShowLink(l3);
+        switch (random) {
+          case 0:
+            setShowLink(l1);
+            break;
+          case 1:
+            setShowLink(l2);
+            break;
+          case 2:
+            setShowLink(l3);
+            break;
+          default:
+            break;
         }
       }
     };
     get();
   }, []);
 
-  // const handleDecide = () => {
-  //   if (random === 0) {
-  //     console.log("link1");
-  //     setShowLink(links?.link1);
-  //   }
-  //   if (random === 1) {
-  //     console.log("link2");
-  //     setShowLink(links?.link2);
-  //   }
-  //   if (random === 2) {
-  //     console.log("link3");
-  //     setShowLink(links?.link3);
-  //   }
-  // };
-
   return (
     <div>
-      {showLink}
-      {/* <div onClick={() => handleDecide()}>UnFinishedModal</div> */}
       <Modal
         withCloseButton={false}
         centered
