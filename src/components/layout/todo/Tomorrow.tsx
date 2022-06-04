@@ -1,9 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { config } from "@config/supabase/supabase";
-import { Button, Checkbox, Group, Modal } from "@mantine/core";
-import { makeNotification } from "@function/makeNotification";
+import React, { useState } from "react";
 import { BsTrashFill } from "react-icons/bs";
-import dayjs from "dayjs";
 import { DeleteModal } from "@components/modal/DeleteModal";
 
 type toods = {
