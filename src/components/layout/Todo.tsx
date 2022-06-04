@@ -27,10 +27,14 @@ const handleFinish = async (
   ]);
   if (data) {
     const left = isFinished ? length - 1 : length + 1;
-    if (length === 1) {
+    if (left === 0) {
       makeNotification("成功", "終わらして普通だからな", "indigo");
     } else {
-      makeNotification("成功", `残タスク${left}。本当に終わる？`, "indigo");
+      makeNotification(
+        "成功",
+        `残タスク${left}。本当に今日中に終わる？`,
+        "indigo"
+      );
     }
   } else if (error) {
     throw new Error("失敗");
@@ -50,8 +54,6 @@ const handleDelete = async (id: number) => {
 };
 
 export const Todo: React.FC<toods> = ({ id, todo, isFinished, length }) => {
-  console.log("SS", isFinished);
-
   const [opened, setOpened] = useState<boolean>(false);
   return (
     <div>
