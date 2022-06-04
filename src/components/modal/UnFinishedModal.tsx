@@ -2,12 +2,10 @@ import React, { useEffect, useState } from "react";
 import { YouTube } from "@components/layout/YouTube";
 import { config } from "@config/supabase/supabase";
 import { makeNotification } from "@function/makeNotification";
-import { Modal, Button, Group } from "@mantine/core";
+import { Modal } from "@mantine/core";
 
-type links = {
-  link1?: string;
-  link2?: string;
-  link3?: string;
+type Props = {
+  open: boolean;
 };
 
 const rand = () => {
@@ -19,11 +17,11 @@ const makeLink = (link: string) => {
   return `https://www.youtube.com/embed/${result[1]}`;
 };
 
-export const UnFinishedModal: React.FC = () => {
+const random: number = rand();
+
+export const UnFinishedModal: React.FC<Props> = ({ open }) => {
   const [showLink, setShowLink] = useState<string>();
   const [opened, setOpened] = useState(false);
-
-  const random: number = rand();
 
   useEffect(() => {
     const get = async () => {
@@ -51,6 +49,7 @@ export const UnFinishedModal: React.FC = () => {
       }
     };
     get();
+    setOpened(open);
   }, []);
 
   return (
@@ -66,10 +65,6 @@ export const UnFinishedModal: React.FC = () => {
           <YouTube link={showLink} />
         </div>
       </Modal>
-
-      <Group position="center">
-        <Button onClick={() => setOpened(true)}>Open Modal</Button>
-      </Group>
     </div>
   );
 };

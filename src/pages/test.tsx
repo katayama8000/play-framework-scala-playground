@@ -4,7 +4,7 @@ const test = () => {
   return (
     <div>
       <div>
-        <UnFinishedModal />
+        <UnFinishedModal open={true} />
       </div>
     </div>
   );
