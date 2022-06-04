@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { config } from "@config/supabase/supabase";
-import { Button, Checkbox, Group, Modal } from "@mantine/core";
-import { makeNotification } from "@function/makeNotification";
+import React, { useState } from "react";
+import { Checkbox } from "@mantine/core";
 import { BsTrashFill } from "react-icons/bs";
-import dayjs from "dayjs";
 import { DeleteModal } from "@components/modal/DeleteModal";
+import { useFinish } from "@hooks/useFinish";
 
 type toods = {
   id: number;
@@ -12,33 +10,6 @@ type toods = {
   isFinished: boolean;
   length: number;
   created_at?: string;
-};
-
-const handleFinish = async (
-  id: number,
-  isFinished: boolean,
-  length: number
-) => {
-  const { data, error } = await config.supabase.from("ToDos").upsert([
-    {
-      id,
-      isFinished: isFinished,
-    },
-  ]);
-  if (data) {
-    const left = isFinished ? length - 1 : length + 1;
-    if (left === 0) {
-      makeNotification("成功", "終わらして普通だからな", "indigo");
-    } else {
-      makeNotification(
-        "成功",
-        `残タスク${left}。本当に今日中に終わる？`,
-        "indigo"
-      );
-    }
-  } else if (error) {
-    throw new Error("失敗");
-  }
 };
 
 export const Today: React.FC<toods> = ({ id, todo, isFinished, length }) => {
@@ -49,7 +20,7 @@ export const Today: React.FC<toods> = ({ id, todo, isFinished, length }) => {
         <Checkbox
           color="indigo"
           checked={isFinished}
-          onChange={(event) => handleFinish(id, event.target.checked, length)}
+          onChange={(event) => useFinish(id, event.target.checked, length)}
         />
         {isFinished ? <del>{todo}</del> : <div>{todo}</div>}
         <BsTrashFill

@@ -5,6 +5,7 @@ import { TextInput, Button, Box, Group } from "@mantine/core";
 import { makeNotification } from "@function/makeNotification";
 import { config } from "@config/supabase/supabase";
 import { Tomorrow } from "@components/layout/todo/Tomorrow";
+import { useMoveTask } from "@hooks/useMoveTask";
 
 type todos = {
   id: number;
@@ -58,6 +59,7 @@ const Home: NextPage = () => {
 
   return (
     <div className="p-20">
+      <Button onClick={useMoveTask}>click</Button>
       <Box sx={{ maxWidth: 300 }} mx="auto">
         <form
           onSubmit={form.onSubmit((values) => handleSubmit(values))}
