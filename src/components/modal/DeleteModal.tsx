@@ -1,24 +1,23 @@
+import { useDelete } from "@hooks/useDelete";
 import { Button, Group, Modal } from "@mantine/core";
 import React from "react";
 
 type Props = {
   id: number;
   todo: string;
-  isFinished: boolean;
+  db: string;
+  isFinished?: boolean;
   opened: boolean;
   setOpened: React.Dispatch<React.SetStateAction<boolean>>;
-  handleDelete: (id: number) => void;
 };
 export const DeleteModal: React.FC<Props> = ({
   id,
   todo,
+  db,
   isFinished,
   opened,
   setOpened,
-  handleDelete,
 }) => {
-  console.log("aaa", isFinished);
-
   return (
     <div>
       <Modal
@@ -35,7 +34,7 @@ export const DeleteModal: React.FC<Props> = ({
           <Button
             color="red"
             onClick={() => {
-              handleDelete(id), setOpened(false);
+              useDelete(db, id), setOpened(false);
             }}
           >
             はい

@@ -4,7 +4,7 @@ import { useForm } from "@mantine/form";
 import { TextInput, Button, Box, Group, Checkbox } from "@mantine/core";
 import { makeNotification } from "@function/makeNotification";
 import { config } from "@config/supabase/supabase";
-import { Today } from "@components/layout/todo/Today";
+import { Tomorrow } from "@components/layout/todo/Tomorrow";
 
 type todos = {
   id: number;
@@ -25,61 +25,36 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     config.supabase
-      .from("ToDos")
+      .from("TomorrowToDos")
       .on("*", (payload) => {
         fetch();
       })
       .subscribe();
     fetch();
-    //checkTask();
   }, []);
 
-  // const checkTask = (task: number) => {
-  //   console.log("checkTask", length);
-
-  //   if (task !== 0) {
-  //     console.log("qqqq");
-  //     makeNotification("success", "まだ終わっていないのか", "cryn");
-  //   }
-  // };
-
   const fetch = async () => {
-    console.log("fetcha");
+    const { data, error } = await config.supabase
+      .from("TomorrowToDos")
+      .select();
 
-    const { data, error } = await config.supabase.from("ToDos").select();
-
-    let array: todos[] = [];
-    data?.forEach((todo) => {
-      if (!todo.isFinished) {
-        array.push(todo);
-      }
-    });
-    data?.forEach((todo) => {
-      todo.length = array.length;
-    });
-
-    setLength(array.length);
+    setLength(data!.length);
     setTodos(data!);
-    //checkTask(array.length);
   };
 
-  const handleSubmit = useCallback(
-    async (values: { todo: string; isFinished: boolean }) => {
-      const { data, error } = await config.supabase.from("ToDos").insert([
-        {
-          todo: values.todo,
-          isFinished: values.isFinished,
-        },
-      ]);
-      if (data) {
-        makeNotification("成功", "Todoを追加したぞ", "indigo");
-      } else if (error) {
-        makeNotification("失敗", "再度入力して", "red");
-      }
-      form.reset();
-    },
-    []
-  );
+  const handleSubmit = useCallback(async (values: { todo: string }) => {
+    const { data, error } = await config.supabase.from("TomorrowToDos").insert([
+      {
+        todo: values.todo,
+      },
+    ]);
+    if (data) {
+      makeNotification("成功", "Todoを追加したぞ", "indigo");
+    } else if (error) {
+      makeNotification("失敗", "再度入力して", "red");
+    }
+    form.reset();
+  }, []);
 
   return (
     <div className="p-20">
@@ -90,7 +65,7 @@ const Home: NextPage = () => {
         >
           <TextInput
             required
-            placeholder={"今日のTodo"}
+            placeholder={"明日のTodo"}
             classNames={{
               input: "text-base",
             }}
@@ -104,17 +79,15 @@ const Home: NextPage = () => {
           </Group>
         </form>
       </Box>
-      <div>残りのタスク{length}</div>
+      <div>明日のタスク{length}</div>
       <div>
         {todos?.map((todo, index) => {
           return (
             <div key={index}>
-              <Today
+              <Tomorrow
                 todo={todo.todo}
                 id={todo.id}
-                isFinished={todo.isFinished}
                 created_at={todo.created_at}
-                length={todo.length!}
               />
             </div>
           );

@@ -41,19 +41,7 @@ const handleFinish = async (
   }
 };
 
-const handleDelete = async (id: number) => {
-  const { data, error } = await config.supabase
-    .from("ToDos")
-    .delete()
-    .match({ id: id });
-  if (data) {
-    makeNotification("成功", "タスク消したぞ", "indigo");
-  } else if (error) {
-    throw new Error("失敗");
-  }
-};
-
-export const Todo: React.FC<toods> = ({ id, todo, isFinished, length }) => {
+export const Today: React.FC<toods> = ({ id, todo, isFinished, length }) => {
   const [opened, setOpened] = useState<boolean>(false);
   return (
     <div>
@@ -72,10 +60,10 @@ export const Todo: React.FC<toods> = ({ id, todo, isFinished, length }) => {
       <DeleteModal
         id={id}
         todo={todo}
+        db="ToDos"
         isFinished={isFinished}
         opened={opened}
         setOpened={setOpened}
-        handleDelete={handleDelete}
       />
     </div>
   );
