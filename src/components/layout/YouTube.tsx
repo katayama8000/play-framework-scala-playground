@@ -13,7 +13,7 @@ export const YouTube: React.FC<Props> = ({ link }) => {
         frameBorder="0"
         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
-        className="p-2"
+        className="rounded-lg p-2"
       />
     </div>
   );

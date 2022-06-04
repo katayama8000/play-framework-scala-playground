@@ -35,14 +35,14 @@ const Home: NextPage = () => {
     //checkTask();
   }, []);
 
-  const checkTask = (task: number) => {
-    console.log("checkTask", length);
+  // const checkTask = (task: number) => {
+  //   console.log("checkTask", length);
 
-    if (task !== 0) {
-      console.log("qqqq");
-      makeNotification("success", "まだ終わっていないのか", "cryn");
-    }
-  };
+  //   if (task !== 0) {
+  //     console.log("qqqq");
+  //     makeNotification("success", "まだ終わっていないのか", "cryn");
+  //   }
+  // };
 
   const fetch = async () => {
     const { data, error } = await config.supabase.from("ToDos").select();
@@ -59,7 +59,7 @@ const Home: NextPage = () => {
 
     setLength(array.length);
     setTodos(data!);
-    checkTask(array.length);
+    //checkTask(array.length);
   };
 
   const handleSubmit = useCallback(
