@@ -17,8 +17,6 @@ const makeLink = (link: string) => {
   return `https://www.youtube.com/embed/${result[1]}`;
 };
 
-const random: number = rand();
-
 export const UnFinishedModal: React.FC<Props> = ({ open }) => {
   const [showLink, setShowLink] = useState<string>();
   const [opened, setOpened] = useState(false);
@@ -33,6 +31,7 @@ export const UnFinishedModal: React.FC<Props> = ({ open }) => {
         const l1 = makeLink(data[0].link1);
         const l2 = makeLink(data[0].link2);
         const l3 = makeLink(data[0].link3);
+        const random: number = rand();
         switch (random) {
           case 0:
             setShowLink(l1);
