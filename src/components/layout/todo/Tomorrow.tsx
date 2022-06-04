@@ -27,6 +27,7 @@ export const Tomorrow: React.FC<toods> = ({ id, todo }) => {
         id={id}
         todo={todo}
         db="TomorrowToDos"
+        isFinished={true}
         opened={opened}
         setOpened={setOpened}
       />

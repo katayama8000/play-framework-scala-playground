@@ -6,7 +6,7 @@ type Props = {
   id: number;
   todo: string;
   db: string;
-  isFinished?: boolean;
+  isFinished: boolean;
   opened: boolean;
   setOpened: React.Dispatch<React.SetStateAction<boolean>>;
 };
