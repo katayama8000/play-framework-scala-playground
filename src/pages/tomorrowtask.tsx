@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import type { NextPage } from "next";
 import { useForm } from "@mantine/form";
-import { TextInput, Button, Box, Group, Checkbox } from "@mantine/core";
+import { TextInput, Button, Box, Group } from "@mantine/core";
 import { makeNotification } from "@function/makeNotification";
 import { config } from "@config/supabase/supabase";
 import { Tomorrow } from "@components/layout/todo/Tomorrow";
