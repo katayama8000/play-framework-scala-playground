@@ -5,6 +5,7 @@ export const useMoveTask = async () => {
   const { data, error } = await config.supabase.from("TomorrowToDos").select();
 
   //明日のタスクと現在日日付が違う==>日付が変わった場合
+  //タスクがない場合も考慮すべき
   if (
     dayjs().format("YYYY-MM-DD") !==
     dayjs(data![0].created_at).format("YYYY-MM-DD")
