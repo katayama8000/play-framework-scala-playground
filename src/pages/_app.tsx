@@ -1,9 +1,9 @@
-import "src/lib/tailwind.css";
 import type { AppProps } from "next/app";
-import { MantineProvider } from "@mantine/core";
 import Head from "next/head";
-import { NotificationsProvider } from "@mantine/notifications";
 import Link from "next/link";
+import "src/lib/tailwind.css";
+import { MantineProvider } from "@mantine/core";
+import { NotificationsProvider } from "@mantine/notifications";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -23,7 +23,6 @@ function MyApp({ Component, pageProps }: AppProps) {
             <Link href="/dashboard" className="mx-2">
               <a className="mx-2">dashboard</a>
             </Link>
-
             <Component {...pageProps} />
           </NotificationsProvider>
         </MantineProvider>
