@@ -4,8 +4,10 @@ import Link from "next/link";
 import "src/lib/tailwind.css";
 import { MantineProvider } from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
+import { useMoveTask } from "@hooks/useMoveTask";
 
 function MyApp({ Component, pageProps }: AppProps) {
+  useMoveTask();
   return (
     <>
       <Head>

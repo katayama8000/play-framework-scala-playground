@@ -13,9 +13,11 @@ type todos = {
   created_at?: string;
   length: number;
 };
+
 const Home: NextPage = () => {
   const [todos, setTodos] = useState<todos[]>();
   const [length, setLength] = useState<number>(0);
+  const task = false;
   const form = useForm({
     initialValues: {
       todo: "",
@@ -31,21 +33,16 @@ const Home: NextPage = () => {
       })
       .subscribe();
     fetch();
-    //checkTask();
   }, []);
 
-  // const checkTask = (task: number) => {
-  //   console.log("checkTask", length);
-
-  //   if (task !== 0) {
-  //     console.log("qqqq");
-  //     makeNotification("success", "まだ終わっていないのか", "cryn");
-  //   }
-  // };
+  const checkTask = (task: number) => {
+    if (length !== 0) {
+      return true;
+    }
+    return false;
+  };
 
   const fetch = async () => {
-    console.log("fetcha");
-
     const { data, error } = await config.supabase.from("ToDos").select();
 
     let array: todos[] = [];
@@ -60,7 +57,6 @@ const Home: NextPage = () => {
 
     setLength(array.length);
     setTodos(data!);
-    //checkTask(array.length);
   };
 
   const handleSubmit = useCallback(
