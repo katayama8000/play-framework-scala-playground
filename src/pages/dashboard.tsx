@@ -96,6 +96,7 @@ const linkform: NextPage = () => {
         <Link href="/">
           <a>←</a>
         </Link>
+        <h3>見るとやる気の起きる動画を保存</h3>
         <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
           <TextInput
             placeholder="https://www.youtube.com/"
@@ -118,12 +119,12 @@ const linkform: NextPage = () => {
             </Button>
           </Group>
         </form>
+        <div className="pt-4">
+          <YouTube link={links?.link1} />
+          <YouTube link={links?.link2} />
+          <YouTube link={links?.link3} />
+        </div>
       </Box>
-      <div className="flex-center flex pt-4">
-        <YouTube link={links?.link1} />
-        <YouTube link={links?.link2} />
-        <YouTube link={links?.link3} />
-      </div>
     </div>
   );
 };

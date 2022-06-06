@@ -20,6 +20,7 @@ const Home: NextPage = () => {
   const [length, setLength] = useState<number>(0);
   const [flag, setFlag] = useState<boolean>(false);
   const [opened, setOpened] = useState<boolean>(false);
+
   const form = useForm({
     initialValues: {
       todo: "",
@@ -37,21 +38,11 @@ const Home: NextPage = () => {
     fetch();
   }, []);
 
-  const checkTask = (task: number) => {
-    if (length !== 0) {
-      return true;
-    }
-    return false;
-  };
-
   useEffect(() => {
     if (flag === false) {
-      console.log("flag is false");
       if (length !== 0) {
-        console.log("length is not 0", length);
         setFlag(true);
         setOpened(true);
-        console.log("opened is true", opened);
       }
     }
   }, [length]);
@@ -114,7 +105,6 @@ const Home: NextPage = () => {
           </Group>
         </form>
       </Box>
-      <div>{opened === true ? <div>aaa</div> : <div>bbb</div>}</div>
       <UnFinishedModal open={opened} />
       {todos?.length !== 0 ? (
         <div>

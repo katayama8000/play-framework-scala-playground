@@ -61,8 +61,10 @@ export const UnFinishedModal: React.FC<Props> = ({ open }) => {
         opened={opened}
         onClose={() => setOpened(false)}
       >
-        <div>タスクが終わっていないよ？</div>
-        <div>これ見てどう思う？</div>
+        <div className="m-1 text-center">
+          <div>タスクが終わっていないよ？</div>
+          <div>これ見てどう思う？</div>
+        </div>
         <div className="flex justify-center">
           <YouTube link={showLink} />
         </div>
