@@ -27,6 +27,7 @@ export const useMoveTask = async () => {
         .delete()
         .match({ id: data![i].id });
     }
+    //終わっているタスクを削除する必要あり
     makeNotification(
       "移動完了",
       "明日のタスクを今日のタスクに移動させたぞ",
