@@ -100,7 +100,7 @@ const Home: NextPage = () => {
           </Group>
         </form>
       </Box>
-      {length !== 0 ? (
+      {todos?.length !== 0 ? (
         <div>
           <div>残りのタスク{length}</div>
           <div>

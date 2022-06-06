@@ -13,7 +13,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>Life Is Short</title>
       </Head>
-      <main className="m-auto max-w-4xl">
+      <main className="m-auto max-w-xl">
         <MantineProvider withGlobalStyles withNormalizeCSS>
           <NotificationsProvider position="bottom-right" zIndex={2077}>
             <Link href="/">

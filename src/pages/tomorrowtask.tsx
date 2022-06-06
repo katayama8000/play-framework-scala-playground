@@ -12,11 +12,9 @@ type todos = {
   todo: string;
   isFinished: boolean;
   created_at?: string;
-  length: number;
 };
 const Home: NextPage = () => {
   const [todos, setTodos] = useState<todos[]>();
-  const [length, setLength] = useState<number>(0);
   const form = useForm({
     initialValues: {
       todo: "",
@@ -38,8 +36,6 @@ const Home: NextPage = () => {
     const { data, error } = await config.supabase
       .from("TomorrowToDos")
       .select();
-
-    setLength(data!.length);
     setTodos(data!);
   };
 
@@ -58,7 +54,7 @@ const Home: NextPage = () => {
   }, []);
 
   return (
-    <div className="p-20">
+    <div className="m-auto p-20">
       <Button onClick={useMoveTask}>click</Button>
       <Box sx={{ maxWidth: 300 }} mx="auto">
         <form
@@ -81,20 +77,28 @@ const Home: NextPage = () => {
           </Group>
         </form>
       </Box>
-      <div>明日のタスク{length}</div>
-      <div>
-        {todos?.map((todo, index) => {
-          return (
-            <div key={index}>
-              <Tomorrow
-                todo={todo.todo}
-                id={todo.id}
-                created_at={todo.created_at}
-              />
-            </div>
-          );
-        })}
-      </div>
+      {todos?.length !== 0 ? (
+        <div>
+          <div>明日のタスク{todos?.length}</div>
+          <div>
+            {todos?.map((todo, index) => {
+              return (
+                <div key={index}>
+                  <Tomorrow
+                    todo={todo.todo}
+                    id={todo.id}
+                    created_at={todo.created_at}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ) : (
+        <div className="pt-8 text-center text-lg font-bold">
+          明日のタスクを追加してください
+        </div>
+      )}
     </div>
   );
 };
