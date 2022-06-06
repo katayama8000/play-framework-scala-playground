@@ -18,6 +18,8 @@ const makeLink = (link: string) => {
 };
 
 export const UnFinishedModal: React.FC<Props> = ({ open }) => {
+  console.log("open", open);
+
   const [showLink, setShowLink] = useState<string>();
   const [opened, setOpened] = useState(false);
 
@@ -49,7 +51,7 @@ export const UnFinishedModal: React.FC<Props> = ({ open }) => {
     };
     get();
     setOpened(open);
-  }, []);
+  }, [open]);
 
   return (
     <div>
@@ -58,8 +60,9 @@ export const UnFinishedModal: React.FC<Props> = ({ open }) => {
         centered
         opened={opened}
         onClose={() => setOpened(false)}
-        title="これを見てどう思う？"
       >
+        <div>タスクが終わっていないよ？</div>
+        <div>これ見てどう思う？</div>
         <div className="flex justify-center">
           <YouTube link={showLink} />
         </div>

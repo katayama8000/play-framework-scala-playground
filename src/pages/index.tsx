@@ -5,6 +5,7 @@ import { TextInput, Button, Box, Group, Divider } from "@mantine/core";
 import { makeNotification } from "@function/makeNotification";
 import { config } from "@config/supabase/supabase";
 import { Today } from "@components/layout/todo/Today";
+import { UnFinishedModal } from "@components/modal";
 
 type todos = {
   id: number;
@@ -17,7 +18,8 @@ type todos = {
 const Home: NextPage = () => {
   const [todos, setTodos] = useState<todos[]>();
   const [length, setLength] = useState<number>(0);
-  const task = false;
+  const [flag, setFlag] = useState<boolean>(false);
+  const [opened, setOpened] = useState<boolean>(false);
   const form = useForm({
     initialValues: {
       todo: "",
@@ -41,6 +43,18 @@ const Home: NextPage = () => {
     }
     return false;
   };
+
+  useEffect(() => {
+    if (flag === false) {
+      console.log("flag is false");
+      if (length !== 0) {
+        console.log("length is not 0", length);
+        setFlag(true);
+        setOpened(true);
+        console.log("opened is true", opened);
+      }
+    }
+  }, [length]);
 
   const fetch = async () => {
     const { data, error } = await config.supabase.from("ToDos").select();
@@ -100,6 +114,8 @@ const Home: NextPage = () => {
           </Group>
         </form>
       </Box>
+      <div>{opened === true ? <div>aaa</div> : <div>bbb</div>}</div>
+      <UnFinishedModal open={opened} />
       {todos?.length !== 0 ? (
         <div>
           <div>残りのタスク{length}</div>
