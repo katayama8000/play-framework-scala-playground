@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import type { NextPage } from "next";
 import { useForm } from "@mantine/form";
-import { TextInput, Button, Box, Group } from "@mantine/core";
+import { TextInput, Button, Box, Group, Divider } from "@mantine/core";
 import { makeNotification } from "@function/makeNotification";
 import { config } from "@config/supabase/supabase";
 import { Today } from "@components/layout/todo/Today";
@@ -100,22 +100,30 @@ const Home: NextPage = () => {
           </Group>
         </form>
       </Box>
-      <div>残りのタスク{length}</div>
-      <div>
-        {todos?.map((todo, index) => {
-          return (
-            <div key={index}>
-              <Today
-                todo={todo.todo}
-                id={todo.id}
-                isFinished={todo.isFinished}
-                created_at={todo.created_at}
-                length={todo.length!}
-              />
-            </div>
-          );
-        })}
-      </div>
+      {length !== 0 ? (
+        <div>
+          <div>残りのタスク{length}</div>
+          <div>
+            {todos?.map((todo, index) => {
+              return (
+                <div key={index}>
+                  <Today
+                    todo={todo.todo}
+                    id={todo.id}
+                    isFinished={todo.isFinished}
+                    created_at={todo.created_at}
+                    length={todo.length!}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ) : (
+        <div className="pt-8 text-center text-lg font-bold">
+          タスクを追加してください
+        </div>
+      )}
     </div>
   );
 };
