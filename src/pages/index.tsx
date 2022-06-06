@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import type { NextPage } from "next";
 import { useForm } from "@mantine/form";
-import { TextInput, Button, Box, Group, Divider } from "@mantine/core";
+import { TextInput, Button, Box, Group } from "@mantine/core";
 import { makeNotification } from "@function/makeNotification";
 import { config } from "@config/supabase/supabase";
 import { Today } from "@components/layout/todo/Today";
 import { UnFinishedModal } from "@components/modal";
+import { useGetTime } from "@hooks/useGetTime";
 
 type todos = {
   id: number;
@@ -20,6 +21,7 @@ const Home: NextPage = () => {
   const [length, setLength] = useState<number>(0);
   const [flag, setFlag] = useState<boolean>(false);
   const [opened, setOpened] = useState<boolean>(false);
+  const hour: boolean = useGetTime();
 
   const form = useForm({
     initialValues: {
@@ -39,7 +41,7 @@ const Home: NextPage = () => {
   }, []);
 
   useEffect(() => {
-    if (flag === false) {
+    if (flag === false && hour === true) {
       if (length !== 0) {
         setFlag(true);
         setOpened(true);
