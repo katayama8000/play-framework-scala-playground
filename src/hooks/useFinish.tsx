@@ -16,6 +16,7 @@ export const useFinish = async (
     const left = isFinished ? length - 1 : length + 1;
     if (left === 0) {
       makeNotification("成功", "終わらして普通だからな", "indigo");
+      return true;
     } else {
       makeNotification(
         "成功",

@@ -5,9 +5,11 @@ import "src/lib/tailwind.css";
 import { MantineProvider } from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
 import { useMoveTask } from "@hooks/useMoveTask";
+import { useComplete } from "@hooks/useComplete";
 
 function MyApp({ Component, pageProps }: AppProps) {
   useMoveTask();
+  //useComplete();
   return (
     <>
       <Head>
