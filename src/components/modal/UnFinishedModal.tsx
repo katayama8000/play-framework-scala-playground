@@ -66,7 +66,7 @@ export const UnFinishedModal: React.FC<Props> = ({ open }) => {
           <div>これ見てどう思う？</div>
         </div>
         <div className="flex justify-center">
-          <YouTube link={showLink} />
+          <YouTube link={showLink} width={336} height={189} />
         </div>
       </Modal>
     </div>

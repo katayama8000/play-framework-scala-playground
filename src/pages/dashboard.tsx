@@ -39,14 +39,19 @@ const linkform: NextPage = () => {
     link2: string;
     link3: string;
   }) => {
-    if (values.link1 === "") {
-      values.link1 = makeOrignalLink(links?.link1!);
-    }
-    if (values.link2 === "") {
-      values.link2 = makeOrignalLink(links?.link2!);
-    }
-    if (values.link3 === "") {
-      values.link3 = makeOrignalLink(links?.link3!);
+    if (values.link1 === "" && values.link2 === "" && values.link3 === "") {
+      makeNotification("はい？", "何か入力して", "red");
+      return;
+    } else {
+      if (values.link1 === "") {
+        values.link1 = makeOrignalLink(links?.link1!);
+      }
+      if (values.link2 === "") {
+        values.link2 = makeOrignalLink(links?.link2!);
+      }
+      if (values.link3 === "") {
+        values.link3 = makeOrignalLink(links?.link3!);
+      }
     }
 
     const { data, error } = await config.supabase.from("Links").upsert([
@@ -147,9 +152,9 @@ const linkform: NextPage = () => {
         </Group>
       </Box>
       <div className="flex-center flex pt-4">
-        <YouTube link={links?.link1} />
-        <YouTube link={links?.link2} />
-        <YouTube link={links?.link3} />
+        <YouTube link={links?.link1} width={224} height={126} />
+        <YouTube link={links?.link2} width={224} height={126} />
+        <YouTube link={links?.link3} width={224} height={126} />
       </div>
     </div>
   );
