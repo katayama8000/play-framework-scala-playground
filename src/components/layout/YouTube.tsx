@@ -7,7 +7,7 @@ type Props = {
 };
 export const YouTube: React.FC<Props> = ({ link, width, height }) => {
   return (
-    <div>
+    <div className="m-2 overflow-hidden rounded-lg">
       <iframe
         width={width}
         height={height}
@@ -15,7 +15,6 @@ export const YouTube: React.FC<Props> = ({ link, width, height }) => {
         frameBorder="0"
         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
-        className="rounded-lg p-2"
       />
     </div>
   );
