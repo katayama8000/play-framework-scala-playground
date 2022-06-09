@@ -7,7 +7,7 @@ export const useDelete = async (db: string, id: number) => {
     .delete()
     .match({ id: id });
   if (data) {
-    makeNotification("成功", "タスク消したぞ", "indigo");
+    makeNotification("成功", "まさか、あきらめていないよね？", "indigo");
   } else if (error) {
     throw new Error("失敗");
   }

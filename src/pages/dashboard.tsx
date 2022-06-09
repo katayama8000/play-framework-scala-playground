@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { NextPage } from "next";
 import Link from "next/link";
-import { TextInput, Button, Group, Box } from "@mantine/core";
+import { TextInput, Button, Group, Box, NumberInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { config } from "@config/supabase/supabase";
 import { YouTube } from "@components/layout/YouTube";
@@ -25,6 +25,7 @@ const makeOrignalLink = (link: string) => {
 
 const linkform: NextPage = () => {
   const [links, setLinks] = useState<links>();
+  const [time, setTime] = useState<number>(0);
   const form = useForm({
     initialValues: {
       link1: "",
@@ -77,6 +78,16 @@ const linkform: NextPage = () => {
     get();
   }, []);
 
+  const setClock = async () => {
+    const { data, error } = await config.supabase.from("Links").upsert([
+      {
+        id: 0,
+        time: time,
+      },
+    ]);
+    makeNotification("成功", "開始時間を決めたよ", "indigo");
+  };
+
   const get = async () => {
     const { data, error } = await config.supabase.from("Links").select();
     if (error) {
@@ -86,6 +97,7 @@ const linkform: NextPage = () => {
       const l1 = makeLink(data[0].link1);
       const l2 = makeLink(data[0].link2);
       const l3 = makeLink(data[0].link3);
+      setTime(data[0].time);
       setLinks({ link1: l1, link2: l2, link3: l3 });
     }
   };
@@ -119,12 +131,26 @@ const linkform: NextPage = () => {
             </Button>
           </Group>
         </form>
-        <div className="pt-4">
-          <YouTube link={links?.link1} />
-          <YouTube link={links?.link2} />
-          <YouTube link={links?.link3} />
-        </div>
+        <h3>動画であおる時間を指定</h3>
+        <NumberInput
+          label="終わりは24時"
+          placeholder="15時から23時まで"
+          max={23}
+          min={15}
+          value={time}
+          onChange={(val) => setTime(val!)}
+        />
+        <Group position="right" mt="md">
+          <Button color="indigo" onClick={setClock}>
+            時間を保存
+          </Button>
+        </Group>
       </Box>
+      <div className="flex-center flex pt-4">
+        <YouTube link={links?.link1} />
+        <YouTube link={links?.link2} />
+        <YouTube link={links?.link3} />
+      </div>
     </div>
   );
 };
