@@ -13,6 +13,8 @@ type links = {
   link3?: string;
 };
 
+//DBのデータの持ち方を変更したい
+
 const makeLink = (link: string) => {
   const result = link.split("=");
   return `https://www.youtube.com/embed/${result[1]}`;

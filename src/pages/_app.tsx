@@ -16,17 +16,21 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>Life Is Short</title>
       </Head>
       <main className="m-auto max-w-3xl">
-        <MantineProvider withGlobalStyles withNormalizeCSS>
+        <Link href="/">
+          <a className="mx-2">today</a>
+        </Link>
+        <Link href="/tomorrowtask">
+          <a className="mx-2">tomorrow</a>
+        </Link>
+        <Link href="/dashboard" className="mx-2">
+          <a className="mx-2">dashboard</a>
+        </Link>
+        <MantineProvider
+          theme={{ colorScheme: "dark" }}
+          withGlobalStyles
+          withNormalizeCSS
+        >
           <NotificationsProvider position="bottom-right" zIndex={2077}>
-            <Link href="/">
-              <a className="mx-2">today</a>
-            </Link>
-            <Link href="/tomorrowtask">
-              <a className="mx-2">tomorrow</a>
-            </Link>
-            <Link href="/dashboard" className="mx-2">
-              <a className="mx-2">dashboard</a>
-            </Link>
             <Component {...pageProps} />
           </NotificationsProvider>
         </MantineProvider>

@@ -1,12 +1,13 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import { useForm } from "@mantine/form";
 import { TextInput, Button, Box, Group } from "@mantine/core";
-import { makeNotification } from "@function/makeNotification";
 import { config } from "@config/supabase/supabase";
 import { Today } from "@components/layout/todo/Today";
 import { UnFinishedModal } from "@components/modal";
 import { useGetTime } from "@hooks/useGetTime";
+import { useHandleSubmit } from "@hooks/useHandleSubmit";
+import { useComplete } from "@hooks/useComplete";
 
 type todos = {
   id: number;
@@ -40,6 +41,7 @@ const Home: NextPage = () => {
     fetch();
   }, []);
 
+  //lengthを検知して、modalを一回だけ開く
   useEffect(() => {
     if (flag === false && hour === true) {
       if (length !== 0) {
@@ -52,40 +54,24 @@ const Home: NextPage = () => {
   const fetch = async () => {
     const { data, error } = await config.supabase.from("ToDos").select();
     setTodos(data!);
-
     //終わっていないタスクの数を取得
     let unFinishedTodoLength: number = 0;
     data?.filter((todo) => {
-      if (todo.isFinished) {
+      if (!todo.isFinished) {
         unFinishedTodoLength++;
       }
     });
     setLength(unFinishedTodoLength);
   };
 
-  const handleSubmit = useCallback(
-    async (values: { todo: string; isFinished: boolean }) => {
-      const { data, error } = await config.supabase.from("ToDos").insert([
-        {
-          todo: values.todo,
-          isFinished: values.isFinished,
-        },
-      ]);
-      if (data) {
-        makeNotification("成功", "Todoを追加したぞ", "indigo");
-      } else if (error) {
-        makeNotification("失敗", "再度入力して", "red");
-      }
-      form.reset();
-    },
-    []
-  );
-
   return (
     <div className="p-20">
+      <Button onClick={useComplete}>click</Button>
       <Box sx={{ maxWidth: 300 }} mx="auto">
         <form
-          onSubmit={form.onSubmit((values) => handleSubmit(values))}
+          onSubmit={form.onSubmit((values) =>
+            useHandleSubmit(values, form, "ToDos")
+          )}
           className="mt-2"
         >
           <TextInput
@@ -117,7 +103,7 @@ const Home: NextPage = () => {
                     id={todo.id}
                     isFinished={todo.isFinished}
                     created_at={todo.created_at}
-                    length={todo.length!}
+                    length={length}
                   />
                 </div>
               );

@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import { useForm } from "@mantine/form";
 import { TextInput, Button, Box, Group } from "@mantine/core";
-import { makeNotification } from "@function/makeNotification";
 import { config } from "@config/supabase/supabase";
 import { Tomorrow } from "@components/layout/todo/Tomorrow";
 import { useMoveTask } from "@hooks/useMoveTask";
+import { useHandleSubmit } from "@hooks/useHandleSubmit";
 
 type todos = {
   id: number;
@@ -39,26 +39,14 @@ const Home: NextPage = () => {
     setTodos(data!);
   };
 
-  const handleSubmit = useCallback(async (values: { todo: string }) => {
-    const { data, error } = await config.supabase.from("TomorrowToDos").insert([
-      {
-        todo: values.todo,
-      },
-    ]);
-    if (data) {
-      makeNotification("成功", "Todoを追加したぞ", "indigo");
-    } else if (error) {
-      makeNotification("失敗", "再度入力して", "red");
-    }
-    form.reset();
-  }, []);
-
   return (
     <div className="m-auto p-20">
-      {/* <Button onClick={useMoveTask}>click</Button> */}
+      <Button onClick={() => useMoveTask}>click</Button>
       <Box sx={{ maxWidth: 300 }} mx="auto">
         <form
-          onSubmit={form.onSubmit((values) => handleSubmit(values))}
+          onSubmit={form.onSubmit((values) =>
+            useHandleSubmit(values, form, "TomorrowToDos")
+          )}
           className="mt-2"
         >
           <TextInput
