@@ -13,6 +13,8 @@ type toods = {
 };
 
 export const Today: React.FC<toods> = ({ id, todo, isFinished, length }) => {
+  console.log("aaaaaaa", length);
+
   const [opened, setOpened] = useState<boolean>(false);
   return (
     <div>
