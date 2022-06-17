@@ -9,7 +9,7 @@ export const useMoveTask = async () => {
   //明日のタスクと現在日日付が違う==>日付が変わった場合
   if (
     dayjs().format("YYYY-MM-DD") !==
-    dayjs(data![0]?.created_at).format("YYYY-MM-DD")
+    dayjs(data![0].created_at).format("YYYY-MM-DD")
   ) {
     //明日のタスクを今日のタスクに移動
     for (let i = 0; i < data!.length; i++) {

@@ -51,19 +51,16 @@ const Home: NextPage = () => {
 
   const fetch = async () => {
     const { data, error } = await config.supabase.from("ToDos").select();
+    setTodos(data!);
 
-    let array: todos[] = [];
-    data?.forEach((todo) => {
-      if (!todo.isFinished) {
-        array.push(todo);
+    //終わっていないタスクの数を取得
+    let unFinishedTodoLength: number = 0;
+    data?.filter((todo) => {
+      if (todo.isFinished) {
+        unFinishedTodoLength++;
       }
     });
-    data?.forEach((todo) => {
-      todo.length = array.length;
-    });
-
-    setLength(array.length);
-    setTodos(data!);
+    setLength(unFinishedTodoLength);
   };
 
   const handleSubmit = useCallback(
