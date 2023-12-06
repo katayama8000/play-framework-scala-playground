@@ -1,4 +1,4 @@
-# expo-eas-store
+# expo-minimal-template
 
 ## up
 
@@ -33,3 +33,6 @@ eas submit -p [platform]
   - docker で環境作れば、local に入れなくても良いのだが...
 - expo のアカウント作成
   - https://expo.dev/
+- expo のプロジェクトを作成
+  - 作成したら`eas init --id xxxxxxxxxx`
+  - これで`app.json`の`projectId`が更新される
