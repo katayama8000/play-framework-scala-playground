@@ -1,12 +1,12 @@
 # expo-minimal-template
 
-## up
+### up
 
 ```bash
-yarn start
+yarn dev
 ```
 
-## build
+### build
 
 ```bash
 eas build -p [platform] -e [enviroment]
@@ -19,7 +19,7 @@ eas build -p android -e development
 `development` は devClient build が作成され、開発時 local server に繋いでに使用する  
 `preview` を動作確認で使う  
 
-## submit
+### submit
 
 ```bash
 eas submit -p [platform]
@@ -36,3 +36,7 @@ eas submit -p [platform]
 - expo のプロジェクトを作成
   - 作成したら`eas init --id xxxxxxxxxx`
   - これで`app.json`の`projectId`が更新される
+ 
+## Expoについて
+- `eas build` はt 30回/month まで無料
+- native module を更新した場合、`devClient`をビルドし直す必要がある
