@@ -1,5 +1,5 @@
 lazy val root = (project in file("."))
-  .enablePlugins(PlayScala)
+  .enablePlugins(PlayScala, BuildInfoPlugin)
   //.enablePlugins(PlayNettyServer).disablePlugins(PlayPekkoHttpServer) // uncomment to use the Netty backend
   .settings(
     name := """play-scala-hello-world-tutorial""",
@@ -14,5 +14,15 @@ lazy val root = (project in file("."))
     scalacOptions ++= Seq(
       "-feature",
       "-Werror"
-    )
+    ),
+    buildInfoKeys := Seq[BuildInfoKey](
+      name,
+      version,
+      scalaVersion,
+      sbtVersion,
+      BuildInfoKey.action("buildTime") {
+        System.currentTimeMillis
+      }
+    ),
+    buildInfoPackage := "controllers"
   )
