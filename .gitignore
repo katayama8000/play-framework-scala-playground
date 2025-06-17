@@ -5,8 +5,9 @@ bin/
 /lib/
 /logs/
 /modules
-/project/project
-/project/target
+/project/
+/.metals/
+.bloop/
 /target
 tmp/
 test-result
