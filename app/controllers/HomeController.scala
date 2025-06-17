@@ -29,6 +29,10 @@ class HomeController @Inject() (cc: ControllerComponents)
     Ok(views.html.tutorial())
   }
 
+  def todo() = Action { implicit request: Request[AnyContent] =>
+    Ok(views.html.todo())
+  }
+
   def version() = Action { implicit request: Request[AnyContent] =>
     Ok(
       Json.obj(

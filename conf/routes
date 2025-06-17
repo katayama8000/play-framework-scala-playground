@@ -10,6 +10,7 @@
 GET     /                                   controllers.HomeController.index()
 GET     /explore                            controllers.HomeController.explore()
 GET     /tutorial                           controllers.HomeController.tutorial()
+GET     /todo                               controllers.HomeController.todo()
 GET     /api/version                            controllers.HomeController.version()
 
 # Map static resources from the /public folder to the /assets URL path
