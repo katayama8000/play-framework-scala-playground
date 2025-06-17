@@ -1,42 +1,43 @@
-# expo-minimal-template
+# Play Hello World Web Tutorial for Scala
 
-### up
+To follow the steps in this tutorial, you will need the correct version of Java and sbt. The tutorial requires:
 
-```bash
-yarn dev
-```
+* Java Software Developer's Kit (SE) 11 or higher
+* sbt 1.9.6 or higher.
 
-### build
-
-```bash
-eas build -p [platform] -e [enviroment]
-eas build -p android -e development
-```
-
-`Android` は動作確認ずみ  
-`iOS` は Apple Developer account が必要なので確認していない  
-
-`development` は devClient build が作成され、開発時 local server に繋いでに使用する  
-`preview` を動作確認で使う  
-
-### submit
+To check your Java version, enter the following in a command window:
 
 ```bash
-eas submit -p [platform]
+java -version
 ```
 
-## 事前準備
+To check your sbt version, enter the following in a command window:
 
-- eas-cli のインストール
-  - https://docs.expo.dev/build/setup/
-  - https://github.com/expo/eas-cli
-  - docker で環境作れば、local に入れなくても良いのだが...
-- expo のアカウント作成
-  - https://expo.dev/
-- expo のプロジェクトを作成
-  - 作成したら`eas init --id xxxxxxxxxx`
-  - これで`app.json`の`projectId`が更新される
- 
-## Expoについて
-- `eas build` はt 30回/month まで無料
-- native module を更新した場合、`devClient`をビルドし直す必要がある
+```bash
+sbt sbtVersion
+```
+
+If you do not have the required versions, follow these links to obtain them:
+
+* [Java SE](https://adoptium.net/)
+* [sbt](http://www.scala-sbt.org/download.html)
+
+## Build and run the project
+
+This example Play project was created from a seed template. It includes all Play components and an Pekko HTTP server. The project is also configured with filters for Cross-Site Request Forgery (CSRF) protection and security headers.
+
+To build and run the project:
+
+1. Use a command window to change into the example project directory, for example: `cd play-scala-hello-world-tutorial`
+
+2. Build the project. Enter: `sbt run`. The project builds and starts the embedded HTTP server. Since this downloads libraries and dependencies, the amount of time required depends partly on your connection's speed.
+
+3. After the message `Server started, ...` displays, enter the following URL in a browser: <http://localhost:9000>
+
+The Play application responds: `Welcome to the Hello World Tutorial!`
+
+## Server backend
+
+By default, the project uses the Pekko HTTP Server backend. To switch to the Netty Server backend, enable the `PlayNettyServer` sbt plugin in the `build.sbt` file.
+In the `build.sbt` of this project, you'll find a commented line for this setting; simply uncomment it to make the switch.
+For more detailed information, refer to the Play Framework [documentation](https://www.playframework.com/documentation/3.0.x/Server).
