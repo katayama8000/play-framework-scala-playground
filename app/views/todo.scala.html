@@ -1,5 +1,57 @@
-@()(implicit request: RequestHeader)
+@import models.Todo
+@import helper._
+@(todos: List[Todo])(implicit request: RequestHeader)
 
 @main("Todo") {
+    <div class="todo-container">
+        <h1 class="todo-header">Todo List</h1>
 
+        <!-- 新しいTodoを追加するフォーム -->
+        <div class="add-todo-form">
+            <form method="POST" action="@routes.HomeController.createTodo()">
+                @CSRF.formField
+                <div class="form-group">
+                    <label for="title"></label>
+                    <input type="text" id="title" name="title" required class="form-control" placeholder="新しいタスクを入力">
+                </div>
+                <div class="form-group">
+                    <label for="description"></label>
+                    <textarea id="description" name="description" rows="2" class="form-control" placeholder="詳細を記入"></textarea>
+                </div>
+                <button type="submit" class="btn-add">追加</button>
+            </form>
+        </div>
+
+        <!-- 既存のTodoリスト -->
+        <div class="todo-list">
+            @if(todos.isEmpty) {
+                <div class="empty-state">
+                    <div class="empty-state-icon">📋</div>
+                    <p>まだタスクがありません</p>
+                </div>
+            } else {
+                @for(todo <- todos) {
+                    <div class="todo-item @if(todo.completed) {completed}">
+                        <div class="todo-content">
+                            <div class="todo-checkbox">
+                                <input type="checkbox"
+                                       class="custom-checkbox"
+                                       @if(todo.completed) {checked}
+                                       onchange="toggleTodo('@todo.id')">
+                            </div>
+                            <div class="todo-details">
+                                <div class="todo-title">@todo.title</div>
+                                @todo.description.map { desc =>
+                                    <div class="todo-description">@desc</div>
+                                }
+                                <div class="todo-meta">
+                                    @todo.createdAt.format(java.time.format.DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"))
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
 }

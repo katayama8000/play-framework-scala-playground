@@ -4,6 +4,7 @@ import javax.inject._
 import play.api._
 import play.api.mvc._
 import play.api.libs.json.Json
+import play.filters.csrf._
 
 /** This controller creates an `Action` to handle HTTP requests to the
   * application's home page.
@@ -30,7 +31,8 @@ class HomeController @Inject() (cc: ControllerComponents)
   }
 
   def todo() = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.todo())
+    val todos = models.Todo.getAll
+    Ok(views.html.todo(todos))
   }
 
   def version() = Action { implicit request: Request[AnyContent] =>
@@ -43,6 +45,23 @@ class HomeController @Inject() (cc: ControllerComponents)
         "buildTime" -> BuildInfo.buildTime
       )
     )
+  }
+
+  def toggleComplete(id: String) = Action { implicit request: Request[AnyContent] =>
+    models.Todo.toggleComplete(id)
+    Redirect(routes.HomeController.todo())
+  }
+
+  def createTodo() = Action { implicit request: Request[AnyContent] =>
+    val formData = request.body.asFormUrlEncoded.getOrElse(Map.empty)
+    val title = formData.get("title").flatMap(_.headOption).getOrElse("")
+    val description = formData.get("description").flatMap(_.headOption).filter(_.nonEmpty)
+
+    if (title.nonEmpty) {
+      models.Todo.create(title, description)
+    }
+
+    Redirect(routes.HomeController.todo())
   }
 
 }
