@@ -1,10 +1,10 @@
-package services
+package models
 
-import models.{Todo, TodoRepository}
 import databases.todo.TodoStats
-import scala.concurrent.{Future, ExecutionContext}
-import javax.inject.{Inject, Singleton}
+
 import java.time.LocalDateTime
+import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
 
 /** Todo サービス層 ビジネスロジックを担当する
   */
@@ -15,7 +15,7 @@ class TodoService @Inject() (
 
   /** 全てのTodoを取得
     */
-  private def getAllTodos: Future[List[Todo]] = {
+  def getAllTodos: Future[List[Todo]] = {
     todoRepository.findAll()
   }
 
@@ -138,12 +138,5 @@ class TodoService @Inject() (
       if (stats.total == 0) 0.0
       else (stats.completed.toDouble / stats.total.toDouble) * 100.0
     }
-  }
-
-  /** 期限切れのTodoを取得（拡張用） 現在は実装なしだが、将来的にdueDate機能を追加する際に使用
-    */
-  def getOverdueTodos(): Future[List[Todo]] = {
-    // 現在は空のリストを返すが、将来的にdueDate機能を追加時に実装
-    Future.successful(List.empty[Todo])
   }
 }

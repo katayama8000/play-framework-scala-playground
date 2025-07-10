@@ -5,12 +5,17 @@ import play.api._
 import play.api.mvc._
 import play.api.libs.json.Json
 import play.filters.csrf._
+import models.TodoService
+import scala.concurrent.{ExecutionContext, Future}
 
 /** This controller creates an `Action` to handle HTTP requests to the
   * application's home page.
   */
 @Singleton
-class HomeController @Inject() (cc: ControllerComponents)
+class HomeController @Inject() (
+    cc: ControllerComponents,
+    todoService: TodoService
+)(implicit ec: ExecutionContext)
     extends AbstractController(cc) {
 
   /** Create an Action to render an HTML page.
@@ -30,9 +35,10 @@ class HomeController @Inject() (cc: ControllerComponents)
     Ok(views.html.tutorial())
   }
 
-  def todo(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    val todos = models.Todo.getAll
-    Ok(views.html.todo(todos))
+  def todo(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+    todoService.getAllTodos.map { todos =>
+      Ok(views.html.todo(todos))
+    }
   }
 
   def version(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
@@ -47,23 +53,24 @@ class HomeController @Inject() (cc: ControllerComponents)
     )
   }
 
-  def toggleComplete(id: String): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    models.Todo.toggleComplete(id) match {
-      case Some(_) => Redirect(routes.HomeController.todo())
-      case None => NotFound("Todo item not found")
+  def toggleComplete(id: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+    todoService.toggleTodoCompletion(id).map {
+      case Right(_) => Redirect(routes.HomeController.todo())
+      case Left(errorMessage) => NotFound(errorMessage)
     }
   }
 
-  def createTodo(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+  def createTodo(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     val formData = request.body.asFormUrlEncoded.getOrElse(Map.empty)
     val title = formData.get("title").flatMap(_.headOption).getOrElse("")
     val description = formData.get("description").flatMap(_.headOption).filter(_.nonEmpty)
 
-    if (title.nonEmpty) {
-      models.Todo.create(title, description)
+    todoService.createTodo(title, description).map {
+      case Right(_) => Redirect(routes.HomeController.todo())
+      case Left(errorMessage) =>
+        // エラーメッセージをフラッシュスコープに保存して、リダイレクト先で表示できるようにする
+        Redirect(routes.HomeController.todo()).flashing("error" -> errorMessage)
     }
-
-    Redirect(routes.HomeController.todo())
   }
 
 }
