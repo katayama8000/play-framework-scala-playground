@@ -52,15 +52,13 @@ object Todo {
   }
 
   def toggleComplete(id: String): Option[Todo] = {
-    todos.find(_.id == id) match {
-      case Some(todo) =>
-        val updatedTodo = todo.copy(
-          completed = !todo.completed,
-          updatedAt = LocalDateTime.now()
-        )
-        todos = todos.map(t => if (t.id == id) updatedTodo else t)
-        Some(updatedTodo)
-      case None => None
+    getById(id).map { todo =>
+      val updatedTodo = todo.copy(
+        completed = !todo.completed,
+        updatedAt = LocalDateTime.now()
+      )
+      todos = todos.map(t => if (t.id == id) updatedTodo else t)
+      updatedTodo
     }
   }
 }

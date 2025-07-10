@@ -48,8 +48,10 @@ class HomeController @Inject() (cc: ControllerComponents)
   }
 
   def toggleComplete(id: String) = Action { implicit request: Request[AnyContent] =>
-    models.Todo.toggleComplete(id)
-    Redirect(routes.HomeController.todo())
+    models.Todo.toggleComplete(id) match {
+      case Some(_) => Redirect(routes.HomeController.todo())
+      case None => NotFound("Todo item not found")
+    }
   }
 
   def createTodo() = Action { implicit request: Request[AnyContent] =>

@@ -34,10 +34,13 @@
                     <div class="todo-item @if(todo.completed) {completed}">
                         <div class="todo-content">
                             <div class="todo-checkbox">
-                                <input type="checkbox"
-                                       class="custom-checkbox"
-                                       @if(todo.completed) {checked}
-                                       onchange="toggleTodo('@todo.id')">
+                                <form method="POST" action="@routes.HomeController.toggleComplete(todo.id)">
+                                    @CSRF.formField
+                                    <input type="checkbox"
+                                           class="custom-checkbox"
+                                           @if(todo.completed) {checked}
+                                           onchange="this.form.submit()">
+                                </form>
                             </div>
                             <div class="todo-details">
                                 <div class="todo-title">@todo.title</div>
