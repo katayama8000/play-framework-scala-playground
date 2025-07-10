@@ -18,24 +18,24 @@ class HomeController @Inject() (cc: ControllerComponents)
     * The configuration in the `routes` file means that this method will be
     * called when the application receives a `GET` request with a path of `/`.
     */
-  def index() = Action { implicit request: Request[AnyContent] =>
+  def index(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.index())
   }
 
-  def explore() = Action { implicit request: Request[AnyContent] =>
+  def explore(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.explore())
   }
 
-  def tutorial() = Action { implicit request: Request[AnyContent] =>
+  def tutorial(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.tutorial())
   }
 
-  def todo() = Action { implicit request: Request[AnyContent] =>
+  def todo(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     val todos = models.Todo.getAll
     Ok(views.html.todo(todos))
   }
 
-  def version() = Action { implicit request: Request[AnyContent] =>
+  def version(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     Ok(
       Json.obj(
         "name" -> BuildInfo.name,
@@ -47,14 +47,14 @@ class HomeController @Inject() (cc: ControllerComponents)
     )
   }
 
-  def toggleComplete(id: String) = Action { implicit request: Request[AnyContent] =>
+  def toggleComplete(id: String): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     models.Todo.toggleComplete(id) match {
       case Some(_) => Redirect(routes.HomeController.todo())
       case None => NotFound("Todo item not found")
     }
   }
 
-  def createTodo() = Action { implicit request: Request[AnyContent] =>
+  def createTodo(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     val formData = request.body.asFormUrlEncoded.getOrElse(Map.empty)
     val title = formData.get("title").flatMap(_.headOption).getOrElse("")
     val description = formData.get("description").flatMap(_.headOption).filter(_.nonEmpty)

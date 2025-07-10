@@ -113,7 +113,7 @@ object TodoDatabase {
 
   /** Todo統計情報を取得
     */
-  def getStats(): Future[TodoStats] = {
+  def getStats: Future[TodoStats] = {
     val all = storage.values.toList
     val completed = all.count(_.completed)
     val pending = all.size - completed

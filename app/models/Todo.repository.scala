@@ -19,7 +19,7 @@ trait TodoRepository {
   def delete(id: String): Future[Boolean]
   def deleteCompleted(): Future[Int]
   def deleteAll(): Future[Int]
-  def getStats(): Future[TodoStats]
+  def getStats: Future[TodoStats]
 }
 
 /** インメモリのTodo リポジトリ実装 TodoDatabaseを使用してデータアクセスを行う
@@ -53,5 +53,5 @@ class InMemoryTodoRepository @Inject() (implicit ec: ExecutionContext)
 
   override def deleteAll(): Future[Int] = TodoDatabase.deleteAll()
 
-  override def getStats(): Future[TodoStats] = TodoDatabase.getStats()
+  override def getStats: Future[TodoStats] = TodoDatabase.getStats
 }

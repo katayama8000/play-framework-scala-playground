@@ -15,7 +15,7 @@ class TodoService @Inject() (
 
   /** 全てのTodoを取得
     */
-  def getAllTodos(): Future[List[Todo]] = {
+  private def getAllTodos: Future[List[Todo]] = {
     todoRepository.findAll()
   }
 
@@ -35,7 +35,7 @@ class TodoService @Inject() (
     */
   def searchTodosByTitle(query: String): Future[List[Todo]] = {
     if (query.trim.isEmpty) {
-      getAllTodos()
+      getAllTodos
     } else {
       todoRepository.findByTitle(query)
     }
@@ -127,14 +127,14 @@ class TodoService @Inject() (
 
   /** Todo統計情報を取得
     */
-  def getTodoStats(): Future[TodoStats] = {
-    todoRepository.getStats()
+  private def getTodoStats: Future[TodoStats] = {
+    todoRepository.getStats
   }
 
   /** 完了率を計算
     */
-  def getCompletionRate(): Future[Double] = {
-    getTodoStats().map { stats =>
+  def getCompletionRate: Future[Double] = {
+    getTodoStats.map { stats =>
       if (stats.total == 0) 0.0
       else (stats.completed.toDouble / stats.total.toDouble) * 100.0
     }
