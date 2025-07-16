@@ -48,15 +48,10 @@ class TodoService @Inject() (
       description: Option[String] = None
   ): Future[Either[String, Todo]] = {
     if (title.trim.isEmpty) {
-      Future.successful(Left("タイトルは必須です"))
-    } else {
-      val todo = Todo(
-        title = title.trim,
-        description = description.filter(_.trim.nonEmpty),
-        completed = false
-      )
-      todoRepository.create(todo).map(Right(_))
+      Future.successful(Left("title is required"))
     }
+    val todo = Todo.create(title.trim, description.filter(_.trim.nonEmpty))
+    todoRepository.create(todo).map(Right(_))
   }
 
   /** Todoを更新

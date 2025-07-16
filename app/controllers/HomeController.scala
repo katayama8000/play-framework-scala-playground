@@ -68,7 +68,6 @@ class HomeController @Inject() (
     todoService.createTodo(title, description).map {
       case Right(_) => Redirect(routes.HomeController.todo())
       case Left(errorMessage) =>
-        // エラーメッセージをフラッシュスコープに保存して、リダイレクト先で表示できるようにする
         Redirect(routes.HomeController.todo()).flashing("error" -> errorMessage)
     }
   }
